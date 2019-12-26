@@ -1,0 +1,15 @@
+{
+    "sandbox": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-vueamplifyfirsttry-sandbox-21424-authRole",
+            "UnauthRoleArn": "arn:aws:iam::157494525794:role/amplify-vueamplifyfirsttry-sandbox-21424-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::157494525794:role/amplify-vueamplifyfirsttry-sandbox-21424-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "amplify-vueamplifyfirsttry-sandbox-21424-deployment",
+            "UnauthRoleName": "amplify-vueamplifyfirsttry-sandbox-21424-unauthRole",
+            "StackName": "amplify-vueamplifyfirsttry-sandbox-21424",
+            "StackId": "arn:aws:cloudformation:eu-west-1:157494525794:stack/amplify-vueamplifyfirsttry-sandbox-21424/0ce6a9a0-277d-11ea-acc2-0224adcab7c8",
+            "AmplifyAppId": "d1owsvr66zzuy5"
+        }
+    }
+}
