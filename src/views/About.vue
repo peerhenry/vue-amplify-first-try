@@ -8,8 +8,11 @@
     input(placeholder="description" v-model="description" :disabled="isPending")
   button(@click="createNewTodo({ name, description })" :disabled="isPending") Add todo
   ul.todos
-    li(v-for="todo in todos" :key="todo.id") {{ todo.name }} - {{ todo.description }}
-    li.pending(v-if="isPending") {{ pendingTodo.name }} - {{ pendingTodo.description }}
+    li.todo(v-for="todo in todos" :class="{ pending: pendingDeleteId === todo.id }" :key="todo.id")
+      span {{ todo.name }} - {{ todo.description }}
+      span.delete-todo(@click="maybeDeleteTodo(todo)") ✖
+    li.todo.pending(v-if="pendingTodo")
+      span {{ pendingTodo.name }} - {{ pendingTodo.description }}
 </template>
 
 <script>
@@ -21,13 +24,20 @@ export default {
     return {
       name: '',
       description: '',
+      pendingDeleteId: null,
     }
   },
   computed: {
     ...mapState(['pendingTodo', 'todos']),
     ...mapGetters(['isPending']),
   },
-  methods: { ...mapActions(['createNewTodo', 'fetchTodos', 'subscribe']) },
+  methods: {
+    ...mapActions(['createNewTodo', 'fetchTodos', 'subscribe', 'deleteTodo']),
+    async maybeDeleteTodo(todo) {
+      this.pendingDeleteId = todo.id
+      await this.deleteTodo(todo)
+    },
+  },
   created() {
     this.fetchTodos()
     this.subscribe() // does not work outside the store in main.js or with a timeout
@@ -38,15 +48,34 @@ export default {
 <style lang="stylus" scoped>
 .pending
   opacity 0.5
-  color green
+  color grey
   background #ddd
 
 .todos
   list-style-type none
   padding-left 0
+  display table
+  margin auto
 
   li
+    display flex
+    justify-content space-between
     margin 10px 0
+
+    span:first-child
+      margin-right 16px
+
+.delete-todo
+  border 1px solid grey
+  border-radius 4px
+  cursor pointer
+  padding 5px
+
+  &:hover
+    background #ccc
+
+.todo
+  display block
 
 .inputs
   display grid
