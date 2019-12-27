@@ -1,63 +1,36 @@
 <template lang="pug">
 .about
-  h1 This page interacts with AWS AppSync through GraphQL
+  h1(style="color: red;") This page interacts with AWS AppSync through GraphQL
   .inputs
     label(for="name") name
-    input(placeholder="name" v-model="name")
+    input(placeholder="name" v-model="name" :disabled="isPending")
     label(for="description") description
-    input(placeholder="description" v-model="description")
-  button(@click="createNewTodo" :disabled="pendingTodo !== null") Add todo
+    input(placeholder="description" v-model="description" :disabled="isPending")
+  button(@click="createNewTodo({ name, description })" :disabled="isPending") Add todo
   ul.todos
     li(v-for="todo in todos" :key="todo.id") {{ todo.name }} - {{ todo.description }}
-    li.pending(v-if="pendingTodo !== null") {{ pendingTodo.name }} - {{ pendingTodo.description }}
+    li.pending(v-if="isPending") {{ pendingTodo.name }} - {{ pendingTodo.description }}
 </template>
 
 <script>
-import API, { graphqlOperation } from '@aws-amplify/api'
-import { createTodo } from '@/graphql/mutations.js'
-import { listTodos } from '@/graphql/queries.js'
-import { onCreateTodo } from '@/graphql/subscriptions'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'About',
   data() {
     return {
-      pendingTodo: null,
-      todos: [],
       name: '',
       description: '',
     }
   },
-  methods: {
-    async execute(graphqlQuery, input) {
-      return await API.graphql(graphqlOperation(graphqlQuery, input))
-    },
-    async createNewTodo() {
-      if (this.pendingTodo !== null) return
-      const todoInput = {
-        name: this.name,
-        description: this.description,
-      }
-      this.pendingTodo = todoInput
-      await this.execute(createTodo, { input: todoInput })
-    },
-    async fetchTodos() {
-      const todosData = await this.execute(listTodos)
-      this.todos.push(...this.todos, ...todosData.data.listTodos.items)
-    },
-    subscribeToCreate() {
-      API.graphql(graphqlOperation(onCreateTodo)).subscribe({
-        next: eventData => {
-          const todo = eventData.value.data.onCreateTodo
-          this.todos.push(todo)
-          this.pendingTodo = null
-        },
-      })
-    },
+  computed: {
+    ...mapState(['pendingTodo', 'todos']),
+    ...mapGetters(['isPending']),
   },
+  methods: { ...mapActions(['createNewTodo', 'fetchTodos', 'subscribe']) },
   created() {
     this.fetchTodos()
-    this.subscribeToCreate()
+    this.subscribe() // does not work outside the store in main.js or with a timeout
   },
 }
 </script>

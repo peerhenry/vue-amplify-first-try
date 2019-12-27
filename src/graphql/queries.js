@@ -8,10 +8,10 @@ export const getTodo = `query GetTodo($id: ID!) {
     description
   }
 }
-`;
+`
 export const listTodos = `query ListTodos(
   $filter: ModelTodoFilterInput
-  $limit: Int
+  $limit: Int = 1000
   $nextToken: String
 ) {
   listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -23,4 +23,4 @@ export const listTodos = `query ListTodos(
     nextToken
   }
 }
-`;
+`
