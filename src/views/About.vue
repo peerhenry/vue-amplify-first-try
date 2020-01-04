@@ -7,6 +7,7 @@
     label(for="description") description
     input(placeholder="description" v-model="description" :disabled="isPending")
   button(@click="createNewTodo({ name, description })" :disabled="isPending") Add todo
+  button(@click="showConfig") Print config
   ul.todos
     li.todo(v-for="todo in todos" :class="{ pending: pendingDeleteId === todo.id }" :key="todo.id")
       span {{ todo.name }} - {{ todo.description }}
@@ -17,6 +18,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import awsconfig from '@/aws-exports'
 
 export default {
   name: 'About',
@@ -36,6 +38,9 @@ export default {
     async maybeDeleteTodo(todo) {
       this.pendingDeleteId = todo.id
       await this.deleteTodo(todo)
+    },
+    showConfig() {
+      console.log(awsconfig)
     },
   },
   created() {
@@ -89,4 +94,7 @@ export default {
   label
     text-align right
     font-weight bold
+
+button
+  margin 0 5px
 </style>
