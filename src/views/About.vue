@@ -7,7 +7,7 @@
     label(for="description") description
     input(placeholder="description" v-model="description" :disabled="isPending")
   button(@click="createNewTodo({ name, description })" :disabled="isPending") Add todo
-  button(@click="showConfig") Print config
+  // button(@click="showConfig") Print config
   ul.todos
     li.todo(v-for="todo in todos" :class="{ pending: pendingDeleteId === todo.id }" :key="todo.id")
       span {{ todo.name }} - {{ todo.description }}

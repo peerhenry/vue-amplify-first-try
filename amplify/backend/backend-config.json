@@ -22,5 +22,12 @@
 			"service": "S3AndCloudFront",
 			"providerPlugin": "awscloudformation"
 		}
+	},
+	"auth": {
+		"vueamplifyfirsttrydb8d4bd5": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
 	}
 }
