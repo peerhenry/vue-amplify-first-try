@@ -9,6 +9,13 @@ import awsconfig from './aws-exports'
 API.configure(awsconfig)
 PubSub.configure(awsconfig)
 
+import Amplify, * as AmplifyModules from 'aws-amplify'
+import { AmplifyPlugin } from 'aws-amplify-vue'
+Amplify.configure(awsconfig)
+Vue.use(AmplifyPlugin, AmplifyModules)
+
+// To call the Amplify library, simply use this.$Amplify. followed by whichever module you wish to use.
+
 Vue.config.productionTip = false
 
 new Vue({

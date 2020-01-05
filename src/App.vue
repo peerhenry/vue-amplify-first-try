@@ -1,12 +1,15 @@
-<template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+<template lang="pug">
+#app
+  Layout
 </template>
+
+<script>
+import Layout from './Layout.vue'
+
+export default {
+  components: { Layout },
+}
+</script>
 
 <style lang="stylus">
 #app
